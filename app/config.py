@@ -22,7 +22,7 @@ env = Config()
 
 # FastAPI configurations
 fastapi_config: dict[str, Any] = {
-    "title": "nFactorial Incubator API",
+    "title": "Şañıraq.kz API",
 }
 
 mongo_url = (

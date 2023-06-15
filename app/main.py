@@ -5,6 +5,8 @@ from app.auth.router import router as auth_router
 from app.config import client, env, fastapi_config
 from app.shanyraks.router import router as shanyrak_router
 
+# from app.posts.router import router as posts_router
+
 app = FastAPI(**fastapi_config)
 
 
@@ -23,3 +25,4 @@ app.add_middleware(
 
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
 app.include_router(shanyrak_router, prefix="/shanyraks", tags=["Shanyraks"])
+# app.include_router(posts_router, prefix="/posts", tags=["Posts"])
