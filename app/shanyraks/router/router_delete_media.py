@@ -23,17 +23,18 @@ def delete_all_shanyrak_media(
     shanyrak_id: str,
     jwt_data: JWTData = Depends(parse_jwt_user_data),
     svc: Service = Depends(get_service),
-    s3_service: S3Service = Depends(S3Service),
 ):
     # Fetch the shanyrak media list
     media_list = svc.repository.get_shanyrak(shanyrak_id)
 
     for media_url in media_list:
         # Delete the file from S3
-        s3_service.delete_file(media_url)
+        svc.s3_service.delete_file(media_url)
 
     # Remove all media URLs from the shanyrak document
-    update_result = svc.repository.remove_all_shanyrak_media(shanyrak_id)
+    update_result = svc.repository.remove_all_shanyrak_media(
+        shanyrak_id, jwt_data.user_id
+    )
 
     if update_result.modified_count == 0:
         raise HTTPException(

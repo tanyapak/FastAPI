@@ -20,6 +20,7 @@ class GetShanyrakResponse(AppModel):
     description: str
     user_id: Any
     media: List[str]
+    comments: List[Any]
 
 
 @router.get("/{shanyrak_id:str}", response_model=GetShanyrakResponse)
@@ -35,5 +36,6 @@ def get_shanyrak(
     # Convert ObjectId to string for user_id and media
     shanyrak["user_id"] = str(shanyrak.get("user_id"))
     shanyrak["media"] = [str(media) for media in shanyrak.get("media", [])]
+    # shanyrak["comments"] = [str(value) for comment in shanyrak.get("comments", [])]
 
     return GetShanyrakResponse(**shanyrak)

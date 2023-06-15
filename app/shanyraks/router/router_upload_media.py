@@ -20,17 +20,16 @@ def upload_shanyrak_media(
     files: List[UploadFile] = File(...),
     jwt_data: JWTData = Depends(parse_jwt_user_data),
     svc: Service = Depends(get_service),
-    s3_service: S3Service = Depends(S3Service),
 ):
     for file in files:
         # Generate the filename by combining the user_id and original filename
         filename = f"{jwt_data.user_id}_{file.filename}"
 
         # Upload the file to S3 and get the URL
-        media_url = s3_service.upload_file(file, filename)
+        media_url = svc.s3_service.upload_file(file, filename)
 
         # Add the media URL to the shanyrak document
-        update_result = svc.repository.add_shanyrak_media(shanyrak_id, media_url)
+        update_result = svc.repository.add_shanyrak_media(shanyrak_id, jwt_data.user_id, media_url)
 
         if update_result.modified_count == 0:
             raise HTTPException(status_code=404, detail="Shanyrak not found")
